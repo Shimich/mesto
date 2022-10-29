@@ -1,7 +1,5 @@
 .profile__add {
     height: 50px;
-
-
     border: 2px solid white;
     border-radius: 2px;
     position: relative;
@@ -27,13 +25,11 @@
     content: "";
     position: absolute;
     top: 23px;
-
     height: 2px;
     background-color: white;
 }
 
 @media screen and (min-width: 900px) {
-
     .profile__add:before,
     .profile__add:after {
         left: 64px;
@@ -42,7 +38,6 @@
 }
 
 @media screen and (max-width: 900px) {
-
     .profile__add:before,
     .profile__add:after {
         left: 133px;
