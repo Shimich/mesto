@@ -8,8 +8,6 @@
     border: none;
 }
 
-
-
 @media screen and (max-width: 900px) {
     .popup__close {
         right: 0;
