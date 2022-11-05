@@ -1,7 +1,7 @@
 .popup__input {
     width: 100%;
     padding: 0;
-    padding-bottom: 13px;
+    padding-bottom: 10px;/*13рх идет от базовой линии а не от лайн хейт поэтому вычитаем 3рх разница сайз и хейт*/
     text-overflow: ellipsis;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
@@ -10,5 +10,6 @@
     line-height: 17px;
     font-weight: 400;
     color: black;
+    margin: 0 0 30px;    
 }
 

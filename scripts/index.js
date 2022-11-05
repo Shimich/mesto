@@ -6,7 +6,6 @@ const popupForm=popupElement.querySelector('.popup__form');
 const profileName = profileInfo.querySelector('.profile__name');//выберем имя и описание профиля
 const profileDescription = profileInfo.querySelector('.profile__description');
 
-
 const popupInputName = popupElement.querySelector('#input_text-name');//выберем куда будем вводить данные 
 const popupInputDescription = popupElement.querySelector('#input_text-description');
 
@@ -32,7 +31,6 @@ const setPopupInfo = function () {
 }//чтобы попап знал что есть в информации
 
 const openPopup = function (event) {
-    console.log(event.target, event.currentTarget);
     popupElement.classList.add('popup_is-opened');
     setPopupInfo();
 }

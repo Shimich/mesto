@@ -4,11 +4,12 @@
     width: 22px;
     background-repeat: no-repeat;
     background-size: contain;
-    background-color: white;
+    background-color: transparent;
     border: none;
+    background-image: url(../../../../images/like_off.svg);
 }
 
-.element__like:hover{
+.element__like:hover {
     opacity: 0.5;
     cursor: pointer;
 }
