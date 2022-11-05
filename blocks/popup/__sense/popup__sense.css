@@ -1,7 +1,7 @@
 .popup__sense {
     font-weight: 900;
     margin: 0;
-    color: black;   
+    color: black;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -12,7 +12,7 @@
     .popup__sense {
         font-size: 24px;
         line-height: 29px;
-        margin-bottom: 49px;/*отступ идет от базовой линии и какжеться там теряется 5рх из лайн хейт */
+        margin-bottom: 49px;/*отступ идет в фигме от базовой линии и какжеться там теряется 5рх из лайн хейт */
     }
 }
 
@@ -20,6 +20,6 @@
     .popup__sense {
         font-size: 18px;
         line-height: 22px;
-        margin-bottom: 75px;/*здесь же отстут идет нижней границы и ничего не теряется*/
+        margin-bottom: 75px;/*здесь же отстут идет от нижней границы и ничего не теряется*/
     }
 }
