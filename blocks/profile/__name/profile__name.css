@@ -1,4 +1,5 @@
 .profile__name {
+    font-weight: 500;
     padding: 0;
     white-space: nowrap;
     overflow: hidden;

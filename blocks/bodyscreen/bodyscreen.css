@@ -3,8 +3,7 @@
     display: flex;
     background-color: black;
     align-items: center;
-    overflow-x: hidden;
-    overflow-y: scroll;
+  
     padding: 0;
     margin: 0;
 }

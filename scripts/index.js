@@ -1,51 +1,53 @@
 
-const popupElement = document.querySelector('.popup');
-const popupCloseButtonElement = popupElement.querySelector('.popup__close');
+const popupElement = document.querySelector('.popup');//ограничем поиск некоторых элементов
 const profileInfo = document.querySelector('.profile__info');
-let profileName = profileInfo.querySelector('.profile__name');
-let profileNameText = profileName.textContent;
-let profileDescription = profileInfo.querySelector('.profile__description');
-let profileDescriptionText = profileDescription.textContent;
-console.log(profileNameText, profileDescriptionText);
-const popupOpenButtonElement = profileInfo.querySelector('.profile__popup');
-let popupName = popupElement.querySelector('.popup__name');
-let popupNamePlaceholder = popupName.getAttribute('placeholder');
-let popupDescription = popupElement.querySelector('.popup__description');
-let popupDescriptionPlaceholder = popupDescription.getAttribute('placeholder');
-console.log(popupNamePlaceholder, popupDescriptionPlaceholder);
-let likeElelment = document.querySelectorAll('.element__like');
-likeElelment.forEach(function (i) {
-    i.addEventListener('click', function () {
-        if (i.classList.contains('element__like_active')) {
-            i.classList.remove('element__like_active');
-            i.classList.add('element__like_off');
-            return;
-        }
-        i.classList.add('element__like_active');
-        i.classList.remove('element__like_off');
-    })
-}
-);
-const formSubmitHandler = function (evt) {
-    evt.preventDefault();
-    profileName.textContent = popupName.value;
-    profileDescription.textContent = popupDescription.value;
-}
+const popupForm=popupElement.querySelector('.popup__form');
+
+const profileName = profileInfo.querySelector('.profile__name');//выберем имя и описание профиля
+const profileDescription = profileInfo.querySelector('.profile__description');
+
+
+const popupInputName = popupElement.querySelector('#input_text-name');//выберем куда будем вводить данные 
+const popupInputDescription = popupElement.querySelector('#input_text-description');
+
+const popupOpenButtonElement = profileInfo.querySelector('.profile__popup');//выберем кнопочки
+const popupCloseButtonElement = popupElement.querySelector('.popup__close');
+// const likeElelment = document.querySelectorAll('.element__like');
+
+// likeElelment.forEach(function (i) {
+//     i.addEventListener('click', function () {
+//         if (i.classList.contains('element__like_active')) {
+//             i.classList.remove('element__like_active');
+//             i.classList.add('element__like_off');
+//             return;
+//         }
+//         i.classList.add('element__like_active');
+//         i.classList.remove('element__like_off');
+//     })
+// });//ставим лайки
+
 const setPopupInfo = function () {
-    popupName.setAttribute('placeholder', profileNameText);
-    popupDescription.setAttribute('placeholder', profileDescriptionText);
-    console.log('brrrrrrr');
-}
+    popupInputName.value = profileName.textContent;
+    popupInputDescription.value = profileDescription.textContent;
+}//чтобы попап знал что есть в информации
+
 const openPopup = function (event) {
     console.log(event.target, event.currentTarget);
     popupElement.classList.add('popup_is-opened');
-    console.log('opened popup cliked');
     setPopupInfo();
 }
+
 const closePopup = function () {
     popupElement.classList.remove('popup_is-opened');
-    console.log('close popup cliked');
 }
+
+const submitFormHandler = function (evt) {
+    evt.preventDefault();
+    profileName.textContent = popupInputName.value;
+    profileDescription.textContent = popupInputDescription.value;
+    closePopup();
+}//отправка информации о пользователе
+
 popupOpenButtonElement.addEventListener('click', openPopup);
 popupCloseButtonElement.addEventListener('click', closePopup);
-popupElement.addEventListener('submit', formSubmitHandler);
+popupForm.addEventListener('submit', submitFormHandler);

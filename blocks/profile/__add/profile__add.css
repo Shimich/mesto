@@ -3,7 +3,7 @@
     border: 2px solid white;
     border-radius: 2px;
     position: relative;
-    background-color: black;
+    background-color: transparent;
 }
 
 @media screen and (min-width: 900px) {
@@ -51,6 +51,6 @@
 }
 
 .profile__add:hover{
-    opacity: 0.8;
+    opacity: 0.6;
     cursor: pointer;
 }
