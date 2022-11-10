@@ -13,3 +13,7 @@
     opacity: 0.5;
     cursor: pointer;
 }
+
+.element__like.element__like_active{
+    opacity: 1;
+}

@@ -5,16 +5,13 @@ const popupAddForm = popupAdd.querySelector('.popup__form');
 const profileInfo = document.querySelector('.profile__info');
 const popupFoto = document.querySelector('.popup_show-foto');
 
-const elementsContainer = document.querySelector('.elements');
-
-const popupFotoImg = popupFoto.querySelector('.popup__foto');
-// const elementFoto = elementTemplate.querySelector('.element__foto');
-// const elementText = elementTemplate.querySelector('.element__text');
+const elementsContainer = document.querySelector('.elements');//куда будем добавлять новые картинки
 
 const profileName = profileInfo.querySelector('.profile__name');//выберем имя и описание профиля
 const profileDescription = profileInfo.querySelector('.profile__description');
 
-const popupFotoName = popupFoto.querySelector('.popup__place-name');
+const popupFotoName = popupFoto.querySelector('.popup__place-name');//выберем элементы попапа картинки
+const popupFotoImg = popupFoto.querySelector('.popup__foto');
 
 const popupInputName = popupInfo.querySelector('#input_text-name');//выберем куда будем вводить данные 
 const popupInputDescription = popupInfo.querySelector('#input_text-description');
@@ -27,7 +24,6 @@ const popupOpenButtonAddElement = document.querySelector('.profile__add');
 const popupCloseButtonAddElement = popupAdd.querySelector('.popup__close');
 const popupOpenButtonFotoElement = document.querySelector('.element__foto');
 const popupCloseButtonFotoElement = popupFoto.querySelector('.popup__close');
-
 
 const initialCards = [
     {
@@ -59,7 +55,6 @@ const initialCards = [
 const openPopupFoto = function (text,URL) {
     popupFoto.classList.add('popup_is-opened');
     popupFotoImg.src = URL;
-    console.log('htr');
     popupFotoName.textContent=text;
 };
 
@@ -82,26 +77,11 @@ function addNewElement(text, foto) {
     });
 
     elementsContainer.prepend(element);
-};
+};//создаем новую карточку с кнопки удалить и лайком и попапом
 
 initialCards.forEach(function (elem) {
     addNewElement(elem.place, elem.link);
-
 });//вывод уже существующих карточек
-
-
-
-// likeElelment.forEach(function (i) {
-//     i.addEventListener('click', function () {
-//         if (i.classList.contains('element__like_active')) {
-//             i.classList.remove('element__like_active');
-//             i.classList.add('element__like_off');
-//             return;
-//         }
-//         i.classList.add('element__like_active');
-//         i.classList.remove('element__like_off');
-//     })
-// });//ставим лайки
 
 const setPopupInfo = function () {
     popupInputName.value = profileName.textContent;

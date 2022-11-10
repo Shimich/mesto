@@ -14,28 +14,6 @@
     transition:visibility .5s, opacity .5s linear;
 }
 
-.popup.popup_is-opened {
-    opacity: 1;
-    visibility: visible;
-}
-
 .popup.popup_show-foto{
     background-color: rgba(0, 0, 0, 0.9);
-}
-
-.popup__foto{
-    margin: 0;
-    padding: 0;
-    max-width: 75vw;
-    max-height: 75vh;
-   object-fit: contain;
-}
-
-.popup__place-name{
-    position: absolute;
-    bottom: -24.5px;
-    margin: 0;
-    font-size: 12px;
-    line-height: 14.5px;
-    font-weight: 400;
 }

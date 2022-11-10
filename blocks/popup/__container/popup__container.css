@@ -18,10 +18,3 @@
         width: 282px;        
     }
 }
-
-.popup__container_foto{
-    display: inline-flex;
-    position: relative;
-    padding: 0;
-    margin: auto auto;
-}
