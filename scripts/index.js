@@ -58,17 +58,17 @@ function openPopup(popup) {
     popup.classList.add('popup_is-opened');
 }
 
-function openAddPopup(){
+function openAddPopup() {
     openPopup(popupAdd);
 }
 
 const openInfoPopup = function (evt) {
-        openPopup(popupInfo);
-        setPopupInfo(); 
+    openPopup(popupInfo);
+    setPopupInfo();
 }
 
 const openFotoPopup = function (text, URL) {
-    popupFoto.classList.add('popup_is-opened');
+    openPopup(popupFoto);
     popupFotoImg.src = URL;
     popupFotoImg.alt = 'картинка локации ' + text;
     popupFotoName.textContent = text;
@@ -81,7 +81,7 @@ const createCard = function (text, foto) {
     const elementText = element.querySelector('.element__text');
     elementText.textContent = text;
     elementFoto.src = foto;
-
+    elementFoto.alt = 'картинка локации ' + text;
     element.querySelector('.element__like').addEventListener('click', function (evt) {
         evt.target.classList.toggle('element__like_active');
     });
@@ -102,8 +102,8 @@ function addNewElementInBeggin(element) {
 };
 
 initialCards.forEach(function (elem) {
-    const OneOfSixCard = createCard(elem.place, elem.link);
-    addNewElementInBeggin(OneOfSixCard);
+    const oneOfSixCard = createCard(elem.place, elem.link);
+    addNewElementInBeggin(oneOfSixCard);
 });//вывод уже существующих карточек
 
 const setPopupInfo = function () {
@@ -111,22 +111,26 @@ const setPopupInfo = function () {
     popupInputDescription.value = profileDescription.textContent;
 }//чтобы попап знал что есть в информации
 
-function closePopup(evt) {
-    evt.target.closest('.popup').classList.remove('popup_is-opened');
+function closePopup(popup) {
+    popup.classList.remove('popup_is-opened');
+}
+
+function closeSomePopup(evt) {
+    closePopup(evt.target.closest('.popup'));
 }
 
 const handleProfileFormSubmit = function (evt) {
     evt.preventDefault();
     profileName.textContent = popupInputName.value;
     profileDescription.textContent = popupInputDescription.value;
-    closePopup(evt);
+    closeSomePopup(evt);
 }//отправка информации о пользователе
 
 const handleAddFormSubmit = function (evt) {
     evt.preventDefault();
     const newCard = createCard(popupInputPlace.value, popupInputURL.value);
     addNewElementInBeggin(newCard);
-    closePopup(evt);
+    closeSomePopup(evt);
     evt.target.reset();
 }//добавление картинки
 
@@ -137,4 +141,4 @@ popupOpenButtonAddElement.addEventListener('click', openAddPopup);
 popupAddForm.addEventListener('submit', handleAddFormSubmit);
 
 
-popupCloseButtons.forEach(el => el.addEventListener('click', closePopup));
+popupCloseButtons.forEach(el => el.addEventListener('click', closeSomePopup));
