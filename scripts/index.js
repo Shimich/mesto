@@ -4,6 +4,7 @@ const popupAdd = document.querySelector('.popup_set-add');
 const popupAddForm = document.forms["card-form"];
 const profileInfo = document.querySelector('.profile__info');
 const popupFoto = document.querySelector('.popup_show-foto');
+const popups = document.querySelectorAll('.popup');
 
 const elementsContainer = document.querySelector('.elements');//куда будем добавлять новые картинки
 
@@ -119,6 +120,20 @@ function closeSomePopup(evt) {
     closePopup(evt.target.closest('.popup'));
 }
 
+function closePopupByClickIvorley(evt) {
+    if (evt.target !== evt.currentTarget) {
+        return;
+    }
+    closeSomePopup(evt);
+}
+
+function closePopupByEsc(evt, popup) {
+    if (evt.key !== 'Escape') {
+        return;
+    }
+    closePopup(popup);
+}
+
 const handleProfileFormSubmit = function (evt) {
     evt.preventDefault();
     profileName.textContent = popupInputName.value;
@@ -140,5 +155,8 @@ popupInfoForm.addEventListener('submit', handleProfileFormSubmit);
 popupOpenButtonAddElement.addEventListener('click', openAddPopup);
 popupAddForm.addEventListener('submit', handleAddFormSubmit);
 
-
 popupCloseButtons.forEach(el => el.addEventListener('click', closeSomePopup));
+popups.forEach(el => el.addEventListener('click', closePopupByClickIvorley));
+document.addEventListener('keydown',function(evt){
+    popups.forEach(el => closePopupByEsc(evt, el));
+});//закрытия попапов
