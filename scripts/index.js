@@ -14,10 +14,10 @@ const profileDescription = profileInfo.querySelector('.profile__description');
 const popupFotoName = popupFoto.querySelector('.popup__place-name');//выберем элементы попапа картинки
 const popupFotoImg = popupFoto.querySelector('.popup__foto');
 
-const popupInputName = popupInfo.querySelector('#input_text-name');//выберем куда будем вводить данные 
-const popupInputDescription = popupInfo.querySelector('#input_text-description');
-const popupInputPlace = popupAdd.querySelector('#input_text-place');
-const popupInputURL = popupAdd.querySelector('#input_url');
+const popupInputName = popupInfo.querySelector('#text-name');//выберем куда будем вводить данные 
+const popupInputDescription = popupInfo.querySelector('#text-description');
+const popupInputPlace = popupAdd.querySelector('#text-place');
+const popupInputURL = popupAdd.querySelector('#url');
 
 const popupOpenButtonInfoElement = profileInfo.querySelector('.profile__popup');//выберем кнопочки
 const popupCloseButtonInfoElement = popupInfo.querySelector('.popup__close');
@@ -63,10 +63,7 @@ function openAddPopup() {
     openPopup(popupAdd);
 }
 
-const openInfoPopup = function (evt) {
-    openPopup(popupInfo);
-    setPopupInfo();
-}
+
 
 const openFotoPopup = function (text, URL) {
     openPopup(popupFoto);
@@ -111,6 +108,12 @@ const setPopupInfo = function () {
     popupInputName.value = profileName.textContent;
     popupInputDescription.value = profileDescription.textContent;
 }//чтобы попап знал что есть в информации
+
+const openInfoPopup = function (evt) {
+    openPopup(popupInfo);
+    setPopupInfo();
+    console.log(profileName.textContent)
+}
 
 function closePopup(popup) {
     popup.classList.remove('popup_is-opened');
