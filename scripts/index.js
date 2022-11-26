@@ -1,10 +1,11 @@
 const popupInfo = document.querySelector('.popup_set-info');//ограничем поиск некоторых элементов
 const popupInfoForm = document.forms["profile-form"];
-const popupAdd = document.querySelector('.popup_set-add');
+const popupAddCard = document.querySelector('.popup_set-add');
 const popupAddForm = document.forms["card-form"];
 const profileInfo = document.querySelector('.profile__info');
 const popupFoto = document.querySelector('.popup_show-foto');
 const popups = document.querySelectorAll('.popup');
+const elementTemplate = document.querySelector('#element-template').content;
 
 const elementsContainer = document.querySelector('.elements');//куда будем добавлять новые картинки
 
@@ -16,54 +17,30 @@ const popupFotoImg = popupFoto.querySelector('.popup__foto');
 
 const popupInputName = popupInfo.querySelector('#text-name');//выберем куда будем вводить данные 
 const popupInputDescription = popupInfo.querySelector('#text-description');
-const popupInputPlace = popupAdd.querySelector('#text-place');
-const popupInputURL = popupAdd.querySelector('#url');
+const popupInfoInputs = Array.from(popupInfo.querySelectorAll('.popup__input'));
+const popupInputPlace = popupAddCard.querySelector('#text-place');
+const popupInputURL = popupAddCard.querySelector('#url');
 
 const popupOpenButtonInfoElement = profileInfo.querySelector('.profile__popup');//выберем кнопочки
 const popupCloseButtonInfoElement = popupInfo.querySelector('.popup__close');
 const popupOpenButtonAddElement = document.querySelector('.profile__add');
-const popupCloseButtonAddElement = popupAdd.querySelector('.popup__close');
+const popupCloseButtonAddElement = popupAddCard.querySelector('.popup__close');
 const popupOpenButtonFotoElement = document.querySelector('.element__foto');
 const popupCloseButtonFotoElement = popupFoto.querySelector('.popup__close');
+const popupInfoSaveButton = popupInfo.querySelector('.popup__save');
 
 const popupCloseButtons = document.querySelectorAll('.popup__close');
 
-const initialCards = [
-    {
-        place: 'Архыз',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-    },
-    {
-        place: 'Челябинская область',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-    },
-    {
-        place: 'Иваново',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-    },
-    {
-        place: 'Камчатка',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-    },
-    {
-        place: 'Холмогорский район',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-    },
-    {
-        place: 'Байкал',
-        link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-    }
-];
+
 
 function openPopup(popup) {
     popup.classList.add('popup_is-opened');
+    document.addEventListener('keydown',closePopupByEsc);
 }
 
 function openAddPopup() {
-    openPopup(popupAdd);
+    openPopup(popupAddCard);
 }
-
-
 
 const openFotoPopup = function (text, URL) {
     openPopup(popupFoto);
@@ -72,8 +49,7 @@ const openFotoPopup = function (text, URL) {
     popupFotoName.textContent = text;
 };
 
-const createCard = function (text, foto) {
-    const elementTemplate = document.querySelector('#element-template').content;
+const createCard = function (text, foto) {    
     const element = elementTemplate.querySelector('.element').cloneNode(true);
     const elementFoto = element.querySelector('.element__foto');
     const elementText = element.querySelector('.element__text');
@@ -100,8 +76,8 @@ function addNewElementInBeggin(element) {
 };
 
 initialCards.forEach(function (elem) {
-    const oneOfSixCard = createCard(elem.place, elem.link);
-    addNewElementInBeggin(oneOfSixCard);
+    const card = createCard(elem.place, elem.link);
+    addNewElementInBeggin(card);
 });//вывод уже существующих карточек
 
 const setPopupInfo = function () {
@@ -112,43 +88,40 @@ const setPopupInfo = function () {
 const openInfoPopup = function (evt) {
     openPopup(popupInfo);
     setPopupInfo();
-    console.log(profileName.textContent)
+    toggleButtonState(popupInfoInputs,popupInfoSaveButton,popupSelectors);
 }
 
 function closePopup(popup) {
     popup.classList.remove('popup_is-opened');
+    document.removeEventListener('keydown',closePopupByEsc);
 }
 
-function closeSomePopup(evt) {
-    closePopup(evt.target.closest('.popup'));
-}
-
-function closePopupByClickIvorley(evt) {
+function closePopupByOverlayClick(evt) {
     if (evt.target !== evt.currentTarget) {
         return;
     }
-    closeSomePopup(evt);
+    closePopup(evt.target);
 }
 
-function closePopupByEsc(evt, popup) {
+function closePopupByEsc(evt) {
     if (evt.key !== 'Escape') {
         return;
     }
-    closePopup(popup);
+    closePopup(document.querySelector('.popup_is-opened'));
 }
 
 const handleProfileFormSubmit = function (evt) {
     evt.preventDefault();
     profileName.textContent = popupInputName.value;
     profileDescription.textContent = popupInputDescription.value;
-    closeSomePopup(evt);
+    closePopup(evt.target.closest('.popup'));
 }//отправка информации о пользователе
 
 const handleAddFormSubmit = function (evt) {
     evt.preventDefault();
     const newCard = createCard(popupInputPlace.value, popupInputURL.value);
     addNewElementInBeggin(newCard);
-    closeSomePopup(evt);
+    closePopup(evt.target.closest('.popup'));
     evt.target.reset();
 }//добавление картинки
 
@@ -158,8 +131,8 @@ popupInfoForm.addEventListener('submit', handleProfileFormSubmit);
 popupOpenButtonAddElement.addEventListener('click', openAddPopup);
 popupAddForm.addEventListener('submit', handleAddFormSubmit);
 
-popupCloseButtons.forEach(el => el.addEventListener('click', closeSomePopup));
-popups.forEach(el => el.addEventListener('click', closePopupByClickIvorley));
-document.addEventListener('keydown',function(evt){
-    popups.forEach(el => closePopupByEsc(evt, el));
-});//закрытия попапов
+popupCloseButtons.forEach(el => el.addEventListener('click', function(evt){
+    closePopup(evt.target.closest('.popup'));
+}));
+popups.forEach(el => el.addEventListener('click', closePopupByOverlayClick));
+//закрытия попапов

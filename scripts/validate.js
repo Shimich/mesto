@@ -1,80 +1,66 @@
-const popupOpenButtonInfoElementForValid = document.querySelector('.profile__popup');
-const popupInfoFormForValidity = document.forms["profile-form"];
-
 const hasInvalidInput = (inputList) => {
-    let s = inputList.some((inputElement) => {
+    return inputList.some((inputElement) => {
         return !inputElement.validity.valid;
     });
-    return s;
 };//проверка есть ли невалидные инпуты
 
-const showInputError = (formElement, inputElement, errorMessage) => {
+const showInputError = (formElement, inputElement, errorMessage, selectors) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.add('popup__input_type_error');
+    inputElement.classList.add(selectors.inputErrorClass);
     errorElement.textContent = errorMessage;
-    errorElement.classList.add('popup__input-error_active');
+    errorElement.classList.add(selectors.errorClass);
 };//показывать ошибку
 
-const hideInputError = (formElement, inputElement) => {
+const hideInputError = (formElement, inputElement, selectors) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-    inputElement.classList.remove('popup__input_type_error');
-    errorElement.classList.remove('popup__input-error_active');
+    inputElement.classList.remove(selectors.inputErrorClass);
+    errorElement.classList.remove(selectors.errorClass);
     errorElement.textContent = '';
 };//скрыть ошибку
 
-const checkInputValidity = (formElement, inputElement) => {
+const checkInputValidity = (formElement, inputElement, selectors) => {
     if (!inputElement.validity.valid) {
-        showInputError(formElement, inputElement, inputElement.validationMessage);
+        showInputError(formElement, inputElement, inputElement.validationMessage, selectors);
     } else {
-        hideInputError(formElement, inputElement);
+        hideInputError(formElement, inputElement, selectors);
     }
 };//проверка валидности
 
-function toggleButtonState(inputList, buttonElement) {
+function toggleButtonState(inputList, buttonElement, selectors) {
     if (hasInvalidInput(inputList)) {
-        buttonElement.classList.add('popup__save_inactive');
+        buttonElement.classList.add(selectors.inactiveButtonClass);
+        buttonElement.setAttribute("disabled", true);
     } else {
-        buttonElement.classList.remove('popup__save_inactive');
+        buttonElement.classList.remove(selectors.inactiveButtonClass);
+        buttonElement.removeAttribute("disabled");
     }
 };//переключатель кнопки сохранить
 
-const setEventListeners = (formElement) => {//принимает форму попап
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-    const buttonElement = formElement.querySelector('.popup__save');
+const setEventListeners = (formElement, selectors) => {//принимает форму попап
+    const inputList = Array.from(formElement.querySelectorAll(selectors.inputSelector));
+    const buttonElement = formElement.querySelector(selectors.submitButtonSelector);
 
-    toggleButtonState(inputList, buttonElement);
+    toggleButtonState(inputList, buttonElement, selectors);
 
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', function () {
-            checkInputValidity(formElement, inputElement);
-            toggleButtonState(inputList, buttonElement);
+            checkInputValidity(formElement, inputElement,selectors);
+            toggleButtonState(inputList, buttonElement, selectors);
         });
     });
 };
 
-const setEventListenerOnProfile = () => {
-    const inputList = Array.from(popupInfoFormForValidity.querySelectorAll('.popup__input'));
-    const buttonElement = popupInfoFormForValidity.querySelector('.popup__save');
+const enableValidation = (selectors) => {
+    const formList = document.querySelectorAll(selectors.formSelector);//собираем все формы
 
-    inputList.forEach((inputElement) => {
-        popupOpenButtonInfoElementForValid.addEventListener('click', function () {
-            checkInputValidity(popupInfoFormForValidity, inputElement);
-            toggleButtonState(inputList, buttonElement);
-        });
-    });
-};//чтобы приоткрытии попапа профиля не ломался попап для новой карточки
-
-const enableValidation = () => {
-    const formList = Array.from(document.querySelectorAll('.popup__form'));//собираем все формы
     formList.forEach((formElement) => {// для каждого попапа
-        const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+        const inputList = Array.from(formElement.querySelectorAll(selectors.inputSelector));
         formElement.addEventListener('submit', function (evt) {
             evt.preventDefault();
-            toggleButtonState(inputList, formElement.querySelector('.popup__save'));
+            toggleButtonState(inputList, formElement.querySelector(selectors.submitButtonSelector),selectors);
         });
-        setEventListeners(formElement);
+        setEventListeners(formElement, selectors);
     });
-    setEventListenerOnProfile();
 };
 
-enableValidation();
+enableValidation(popupSelectors); 

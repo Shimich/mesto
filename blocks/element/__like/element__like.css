@@ -6,7 +6,7 @@
     background-size: contain;
     background-color: transparent;
     border: none;
-    background-image: url(../../../../images/like_off.svg);
+    background-image: url(../../../images/like_off.svg);
 }
 
 .element__like:hover {
