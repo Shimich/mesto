@@ -28,70 +28,45 @@ const popupCloseButtonAddElement = popupAddCard.querySelector('.popup__close');
 const popupOpenButtonFotoElement = document.querySelector('.element__foto');
 const popupCloseButtonFotoElement = popupFoto.querySelector('.popup__close');
 const popupInfoSaveButton = popupInfo.querySelector('.popup__save');
+const popupAddSaveButton = popupAddCard.querySelector('.popup__save');
 
 const popupCloseButtons = document.querySelectorAll('.popup__close');
 
 function openPopup(popup) {
     popup.classList.add('popup_is-opened');
-    document.addEventListener('keydown',closePopupByEsc);
+    document.addEventListener('keydown', closePopupByEsc);
 }
 
 function openAddPopup() {
     openPopup(popupAddCard);
 }
 
-const openFotoPopup = function (text, URL) {
+function openFotoPopup(text, URL) {
     openPopup(popupFoto);
     popupFotoImg.src = URL;
     popupFotoImg.alt = 'картинка локации ' + text;
     popupFotoName.textContent = text;
 };
 
-const createCard = function (text, foto) {    
-    const element = elementTemplate.querySelector('.element').cloneNode(true);
-    const elementFoto = element.querySelector('.element__foto');
-    const elementText = element.querySelector('.element__text');
-    elementText.textContent = text;
-    elementFoto.src = foto;
-    elementFoto.alt = 'картинка локации ' + text;
-    element.querySelector('.element__like').addEventListener('click', function (evt) {
-        evt.target.classList.toggle('element__like_active');
-    });
-
-    element.querySelector('.element__btn-delete').addEventListener('click', function (evt) {
-        element.remove();
-    });
-
-    elementFoto.addEventListener('click', function () {
-        openFotoPopup(text, foto);
-    });
-
-    return element;
-};//создаем новую карточку с кнопки удалить и лайком и попапом
-
-function addNewElementInBeggin(element) {
-    elementsContainer.prepend(element);
-};
-
 initialCards.forEach(function (elem) {
-    const card = createCard(elem.place, elem.link);
-    addNewElementInBeggin(card);
-});//вывод уже существующих карточек
+    const card = new Card(elem.place, elem.link);
+    card.createCard(elementsContainer);
+});// вывод существующих карточек 
 
-const setPopupInfo = function () {
+function setPopupInfo() {
     popupInputName.value = profileName.textContent;
     popupInputDescription.value = profileDescription.textContent;
 }//чтобы попап знал что есть в информации
 
+setPopupInfo();
+
 const openInfoPopup = function (evt) {
     openPopup(popupInfo);
-    setPopupInfo();
-    toggleButtonState(popupInfoInputs,popupInfoSaveButton,popupSelectors);
 }
 
 function closePopup(popup) {
     popup.classList.remove('popup_is-opened');
-    document.removeEventListener('keydown',closePopupByEsc);
+    document.removeEventListener('keydown', closePopupByEsc);
 }
 
 function closePopupByOverlayClick(evt) {
@@ -117,8 +92,9 @@ const handleProfileFormSubmit = function (evt) {
 
 const handleAddFormSubmit = function (evt) {
     evt.preventDefault();
-    const newCard = createCard(popupInputPlace.value, popupInputURL.value);
-    addNewElementInBeggin(newCard);
+    const newCard = new Card(popupInputPlace.value, popupInputURL.value);
+    newCard.createCard(elementsContainer);
+
     closePopup(evt.target.closest('.popup'));
     evt.target.reset();
 }//добавление картинки
@@ -129,8 +105,15 @@ popupInfoForm.addEventListener('submit', handleProfileFormSubmit);
 popupOpenButtonAddElement.addEventListener('click', openAddPopup);
 popupAddForm.addEventListener('submit', handleAddFormSubmit);
 
-popupCloseButtons.forEach(el => el.addEventListener('click', function(evt){
+popupCloseButtons.forEach(el => el.addEventListener('click', function (evt) {
     closePopup(evt.target.closest('.popup'));
 }));
 popups.forEach(el => el.addEventListener('click', closePopupByOverlayClick));
 //закрытия попапов
+
+const infoFormValidor = new FormValidator(popupSelectors,popupInfoForm);
+infoFormValidor.enableValidation(popupInfoForm);
+
+const addFormValidor = new FormValidator(popupSelectors,popupAddForm);
+addFormValidor.enableValidation(popupAddForm);
+// валидаия
