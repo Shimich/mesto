@@ -1,3 +1,7 @@
+import Card from './Card.js';
+import FormValidator from './FormValidation.js';
+import {initialCards,popupSelectors} from './constants.js';
+
 const popupInfo = document.querySelector('.popup_set-info');//ограничем поиск некоторых элементов
 const popupInfoForm = document.forms["profile-form"];
 const popupAddCard = document.querySelector('.popup_set-add');
@@ -5,7 +9,7 @@ const popupAddForm = document.forms["card-form"];
 const profileInfo = document.querySelector('.profile__info');
 const popupFoto = document.querySelector('.popup_show-foto');
 const popups = document.querySelectorAll('.popup');
-const elementTemplate = document.querySelector('#element-template').content;
+const cardTemplate = document.querySelector('#element-template').content;
 
 const elementsContainer = document.querySelector('.elements');//куда будем добавлять новые картинки
 
@@ -17,20 +21,13 @@ const popupFotoImg = popupFoto.querySelector('.popup__foto');
 
 const popupInputName = popupInfo.querySelector('#text-name');//выберем куда будем вводить данные 
 const popupInputDescription = popupInfo.querySelector('#text-description');
-const popupInfoInputs = Array.from(popupInfo.querySelectorAll('.popup__input'));
 const popupInputPlace = popupAddCard.querySelector('#text-place');
 const popupInputURL = popupAddCard.querySelector('#url');
 
 const popupOpenButtonInfoElement = profileInfo.querySelector('.profile__popup');//выберем кнопочки
-const popupCloseButtonInfoElement = popupInfo.querySelector('.popup__close');
 const popupOpenButtonAddElement = document.querySelector('.profile__add');
-const popupCloseButtonAddElement = popupAddCard.querySelector('.popup__close');
-const popupOpenButtonFotoElement = document.querySelector('.element__foto');
-const popupCloseButtonFotoElement = popupFoto.querySelector('.popup__close');
-const popupInfoSaveButton = popupInfo.querySelector('.popup__save');
-const popupAddSaveButton = popupAddCard.querySelector('.popup__save');
-
 const popupCloseButtons = document.querySelectorAll('.popup__close');
+const esc = 'Escape';
 
 function openPopup(popup) {
     popup.classList.add('popup_is-opened');
@@ -48,9 +45,14 @@ function openFotoPopup(text, URL) {
     popupFotoName.textContent = text;
 };
 
+function addCard(place,url) {
+    const card = new Card(place,url,cardTemplate);
+    const realCard = card.createCard();
+    elementsContainer.prepend(realCard);
+}
+
 initialCards.forEach(function (elem) {
-    const card = new Card(elem.place, elem.link);
-    card.createCard(elementsContainer);
+    addCard(elem.place, elem.link);
 });// вывод существующих карточек 
 
 function setPopupInfo() {
@@ -77,7 +79,7 @@ function closePopupByOverlayClick(evt) {
 }
 
 function closePopupByEsc(evt) {
-    if (evt.key !== 'Escape') {
+    if (evt.key !== esc) {
         return;
     }
     closePopup(document.querySelector('.popup_is-opened'));
@@ -92,9 +94,7 @@ const handleProfileFormSubmit = function (evt) {
 
 const handleAddFormSubmit = function (evt) {
     evt.preventDefault();
-    const newCard = new Card(popupInputPlace.value, popupInputURL.value);
-    newCard.createCard(elementsContainer);
-
+    addCard(popupInputPlace.value, popupInputURL.value);
     closePopup(evt.target.closest('.popup'));
     evt.target.reset();
 }//добавление картинки
@@ -111,9 +111,9 @@ popupCloseButtons.forEach(el => el.addEventListener('click', function (evt) {
 popups.forEach(el => el.addEventListener('click', closePopupByOverlayClick));
 //закрытия попапов
 
-const infoFormValidor = new FormValidator(popupSelectors,popupInfoForm);
+const infoFormValidor = new FormValidator(popupSelectors, popupInfoForm);
 infoFormValidor.enableValidation(popupInfoForm);
 
-const addFormValidor = new FormValidator(popupSelectors,popupAddForm);
+const addFormValidor = new FormValidator(popupSelectors, popupAddForm);
 addFormValidor.enableValidation(popupAddForm);
 // валидаия

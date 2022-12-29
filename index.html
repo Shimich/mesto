@@ -37,12 +37,12 @@
                 <form name="profile-form" class="popup__form" id="profile-form">
                     <h3 class="popup__sense">Редактировать профиль</h3>
                     <div class="popup__input-container">
-                        <input type="text" class="popup__input" name="name"
+                        <input type="text" class="popup__input" name="name" placeholder="Имя"
                             id="text-name" minlength="2" maxlength="40" required>
                         <span class="popup__input-error text-name-error"></span>
                     </div>
                     <div class="popup__input-container">
-                        <input type="text" class="popup__input" name="description"
+                        <input type="text" class="popup__input" name="description" placeholder="Профессия"
                             id="text-description" minlength="2" maxlength="400" required>
                         <span class="popup__input-error text-description-error"></span>
                     </div>
@@ -87,10 +87,8 @@
             </div>
         </div>
     </template>
-    <script defer src="./scripts/Card.js"></script>
-    <script defer src="./scripts/FormValidation.js" ></script>
-    <script defer src="./scripts/constants.js" ></script>
-    <script defer src="./scripts/index.js" ></script>
+    
+    <script defer type="module" src="./scripts/index.js" ></script>
         
 </body>
 
