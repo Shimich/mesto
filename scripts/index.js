@@ -9,7 +9,7 @@ const popupAddForm = document.forms["card-form"];
 const profileInfo = document.querySelector('.profile__info');
 const popupFoto = document.querySelector('.popup_show-foto');
 const popups = document.querySelectorAll('.popup');
-const cardTemplate = document.querySelector('#element-template').content;
+const cardTemplateSelector = '#element-template';
 
 const elementsContainer = document.querySelector('.elements');//куда будем добавлять новые картинки
 
@@ -38,7 +38,7 @@ function openAddPopup() {
     openPopup(popupAddCard);
 }
 
-function openFotoPopup(text, URL) {
+export default function openFotoPopup(text, URL) {
     openPopup(popupFoto);
     popupFotoImg.src = URL;
     popupFotoImg.alt = 'картинка локации ' + text;
@@ -46,7 +46,7 @@ function openFotoPopup(text, URL) {
 };
 
 function addCard(place,url) {
-    const card = new Card(place,url,cardTemplate);
+    const card = new Card(place,url,cardTemplateSelector);
     const realCard = card.createCard();
     elementsContainer.prepend(realCard);
 }

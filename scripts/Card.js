@@ -1,3 +1,4 @@
+import openFotoPopup from './index.js';
 export default class Card {
     constructor(text, foto, templateSelctor) {
         this._foto = foto;
@@ -6,7 +7,7 @@ export default class Card {
     }
 
     _getTemplate() {
-        const element = this._templateSelector
+        const element = document.querySelector(this._templateSelector).content
             .querySelector('.element')
             .cloneNode(true);
 
