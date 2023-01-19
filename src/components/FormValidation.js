@@ -1,5 +1,4 @@
 export default class FormValidator {
-
     constructor(popupSelectors, popupType) {
         this._selectors = popupSelectors;
         this._popup = popupType;
@@ -46,13 +45,13 @@ export default class FormValidator {
     _setEventListeners = (formElement) => {//принимает форму попап
         const inputList = Array.from(formElement.querySelectorAll(this._selectors.inputSelector));
         const buttonElement = formElement.querySelector(this._selectors.submitButtonSelector);
-       
+
         this._toggleButtonState(inputList, buttonElement);
 
         const selectors = this._selectors;
         inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', function () {
-                let validator = new FormValidator(selectors, formElement);
+                const validator = new FormValidator(selectors, formElement);
                 validator._toggleButtonState(inputList, buttonElement);
                 validator._checkInputValidity(formElement, inputElement);
             });
@@ -60,17 +59,15 @@ export default class FormValidator {
     };
 
     enableValidation = (formElement) => {// форма с которой работаем
-
         const inputList = Array.from(formElement.querySelectorAll(this._selectors.inputSelector));// список из полей ввода
         const selectors = this._selectors;
 
-        let validator = new FormValidator(selectors, formElement);
+        const validator = new FormValidator(selectors, formElement);
 
         formElement.addEventListener('submit', function (evt) {
             evt.preventDefault();
-            validator._toggleButtonState(inputList, formElement.querySelector(selectors.submitButtonSelector));// переключаем кнопу после ее нажатия
+            setTimeout(() => { validator._toggleButtonState(inputList, formElement.querySelector(selectors.submitButtonSelector)) }, 1000);// переключаем кнопу после ее нажатия но пойзже ресета
         });
         this._setEventListeners(formElement);
     };
-
 }

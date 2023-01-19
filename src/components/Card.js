@@ -1,9 +1,9 @@
-import openFotoPopup from './index.js';
 export default class Card {
-    constructor(text, foto, templateSelctor) {
-        this._foto = foto;
-        this._text = text;
+    constructor(link, place, templateSelctor, handleCardClick) {
+        this._foto = link;
+        this._text = place;
         this._templateSelector = templateSelctor;
+        this._openByFoto = handleCardClick;
     }
 
     _getTemplate() {
@@ -19,7 +19,7 @@ export default class Card {
     }
 
     _openFotoPopup = () => {
-        openFotoPopup(this._text, this._foto);
+        this._openByFoto(this._foto, this._text);
     }
 
     _switchLike = (evt) => {
@@ -41,5 +41,4 @@ export default class Card {
 
         return this._cardElement;
     };
-
 }

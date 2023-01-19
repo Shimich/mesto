@@ -34,4 +34,6 @@ const popupSelectors = {
     errorClass: 'popup__input-error_active'
 };
 
-export {initialCards,popupSelectors};
+const esc = 'Escape';
+
+export { initialCards, popupSelectors, esc };
