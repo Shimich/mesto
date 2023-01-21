@@ -25,7 +25,7 @@ const initialCards = [
     }
 ];
 
-const popupSelectors = {
+const validationConfig = {
     formSelector: '.popup__form',
     inputSelector: '.popup__input',
     submitButtonSelector: '.popup__save',
@@ -36,4 +36,4 @@ const popupSelectors = {
 
 const esc = 'Escape';
 
-export { initialCards, popupSelectors, esc };
+export { initialCards, validationConfig, esc };
