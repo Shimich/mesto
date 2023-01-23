@@ -2,8 +2,7 @@ import { esc } from '../utils/constants.js';
 
 export default class Popup {
     constructor(popupSelector) {
-        this._popupSelector = popupSelector;
-        this._popupElement = document.querySelector(this._popupSelector);
+        this._popupElement = document.querySelector(popupSelector);
     }
 
     close() {
@@ -20,7 +19,7 @@ export default class Popup {
 
     open() {
         this._popupElement.classList.add('popup_is-opened');
-        document.addEventListener('keydown', this._handleEscClose.bind(this));
+        document.addEventListener('keydown', this._handleEscClose);
     }
 
     _handleOverlayClose(evt) {

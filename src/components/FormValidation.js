@@ -34,7 +34,7 @@ export default class FormValidator {
         }
     };
 
-    _toggleButtonState() {
+    toggleButtonState() {
         if (this._hasInvalidInput()) {
             this._buttonAdd.classList.add(this._selectors.inactiveButtonClass);
             this._buttonAdd.setAttribute("disabled", true);
@@ -48,18 +48,18 @@ export default class FormValidator {
         const validator = new FormValidator(this._selectors, this._form);
         this._inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', function () {
-                validator._toggleButtonState();
+                validator.toggleButtonState();
                 validator._checkInputValidity(inputElement);
             });
         });
         this._form.addEventListener('submit', function (evt) {
             evt.preventDefault();
-            setTimeout(() => { validator._toggleButtonState() }, 0);// переключаем кнопу после ее нажатия но пойзже ресета
+            setTimeout(() => { validator.toggleButtonState() }, 0);// переключаем кнопу после ее нажатия но пойзже ресета
         });
         const inputList = this._inputList;
         this._form.addEventListener('reset', function (evt) {
             setTimeout(() => {
-                //validator._toggleButtonState();
+                //validator.toggleButtonState();
                 inputList.forEach((inputElement) => {
                     validator._hideInputError(inputElement);
                 });
@@ -69,7 +69,7 @@ export default class FormValidator {
 
 
     enableValidation() {
-        this._toggleButtonState();
+        this.toggleButtonState();
         this._setEventListeners();
     };
 }

@@ -44,8 +44,8 @@ const cardList = new Section({// картинки в секцию
 
 cardList.renderItems();//отрисовка тех что есть
 
-const addingPopup = new PopupWithForm(popupAddSelector, (input) => {
-    renderCard(input.url, input.place);// здесть урл потому что берем из инпутов
+const addingPopup = new PopupWithForm(popupAddSelector, (inputs) => {
+    renderCard(inputs.url, inputs.place);// здесть урл потому что берем из инпутов
     addingPopup.close();
 });
 addingPopup.setEventListeners();// работа с попапом добавлеия картинки
@@ -57,7 +57,6 @@ function setPopupInfo() {
     popupInputName.value = userInfo.name;
     popupInputDescription.value = userInfo.description;
 }//чтобы попап знал что есть в информации
-setPopupInfo();
 
 const userPopup = new PopupWithForm(popupInfoSelector, (input) => {
     userInfoInstallation.setUserInfo(input.name, input.description);
@@ -67,8 +66,8 @@ userPopup.setEventListeners();// функционал попапа юзера
 
 popupOpenButtonInfoElement.addEventListener('click', () => {
     setPopupInfo();
-    infoFormValidor.enableValidation();// (для себя) кажется так скоздается куча новых слушателей чем засоряю память, а тогл приватный метод
-    userPopup.open();    
+    infoFormValidor.toggleButtonState();
+    userPopup.open();
 });
 popupOpenButtonAddElement.addEventListener('click', addingPopup.open.bind(addingPopup));// открытие попапов
 
