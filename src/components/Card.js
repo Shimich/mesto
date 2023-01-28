@@ -34,7 +34,7 @@ export default class Card {
         return this._likeButton.classList.contains('element__like_active');
     }// лайкнута ли на странице
 
-    _likeClickHandler = () => {
+    _handleLike = () => {
         this._likeStatus()
             .then((res) => {
                 this._likeSum.textContent = `${res.likes.length}`;
@@ -43,7 +43,7 @@ export default class Card {
     }
 
     _setEventListeners() {
-        this._likeButton.addEventListener('click', this._likeClickHandler);
+        this._likeButton.addEventListener('click', this._handleLike);
         this._deleteButton.addEventListener('click', this._delete);
         this._elementFoto.addEventListener('click', this._openFotoPopup);
     }

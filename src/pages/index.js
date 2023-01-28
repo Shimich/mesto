@@ -1,41 +1,12 @@
 import './index.css';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidation.js';
-import { validationConfig, personalInfo } from '../utils/constants.js';
+import { validationConfig,  personalInfo, userPopupSelector, userForm, popupAddSelector, addForm, fotoPopupSelector, deletePopupSelector, avatarPopupSelector, avatarForm, cardTemplateSelector, cardsContainerSelector, popupInputName, popupInputDescription, nameSelector, descriptionSelector, avatarSelector, userPopupOpenButton, addPopupOpenButton, avatarPopupOpenButton, profilePopupSubmitButton, addPopupSubmitButton, deletePopupSubmitButton, avatarPopupSubmitButton } from '../utils/constants.js';
 import Section from '../components/Section.js';
 import PopupWithForm from '../components/PopupWithForm.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import UserInfo from '../components/UserInfo.js';
 import Api from '../components/Api.js';
-
-const popupInfo = document.querySelector('.popup_set-info');//ограничим поиск некоторых элементов
-const popupInfoSelector = '.popup_set-info';
-const popupInfoForm = document.forms["profile-form"];
-const popupAddSelector = '.popup_set-add';
-const popupAddForm = document.forms["card-form"];
-const profileInfo = document.querySelector('.profile__info');
-const popupFotoSelector = '.popup_show-foto';
-const popupDeleteSelector = '.popup_delete-card';
-const popupDeleteForm = document.forms["delete-form"];
-const popupAvatarSelector = '.popup_set-avatar';
-const popupAvatarForm = document.forms["avatar-form"];
-const cardTemplateSelector = '#element-template';
-
-const cardsContainerSelector = '.elements'//куда будем добавлять новые картинки
-
-const popupInputName = popupInfo.querySelector('#text-name');//выберем откуда будем вводить данные 
-const popupInputDescription = popupInfo.querySelector('#text-description');
-const nameSelector = '.profile__name';//выберем куда будем вводить данные
-const descriptionSelector = '.profile__description';
-const avatarSelector = '.profile__avatar';
-
-const popupOpenButtonInfoElement = profileInfo.querySelector('.profile__popup');//выберем кнопочки
-const popupOpenButtonAddElement = document.querySelector('.profile__add');
-const popupOpenButtonAvatar = document.querySelector('.profile__avatar-container');
-const popupSubmitButtonProfile = popupInfoForm.querySelector(".popup__save");
-const popupSubmitButtonAdd = popupAddForm.querySelector(".popup__save");
-const popupSubmitButtonDelete = popupDeleteForm.querySelector(".popup__save");
-const popupSubmitButtonAvatar = popupAvatarForm.querySelector(".popup__save");
 
 const api = new Api({
     headers: personalInfo.headers,
@@ -43,8 +14,8 @@ const api = new Api({
 });
 
 let deleteCardID;
-const deletePopup = new PopupWithForm(popupDeleteSelector, () => {
-    popupSubmitButtonDelete.textContent = "Удаление...";
+const deletePopup = new PopupWithForm(deletePopupSelector, () => {
+    deletePopupSubmitButton.textContent = "Удаление...";
     api.deleteCard(deleteCardID)
         .then(() => {
             document.getElementById(`${deleteCardID}`).remove();
@@ -52,11 +23,11 @@ const deletePopup = new PopupWithForm(popupDeleteSelector, () => {
             deleteCardID = null;
         })
         .catch((err) => { console.log(err) })
-        .finally(() => popupSubmitButtonDelete.textContent = "Да");
+        .finally(() => deletePopupSubmitButton.textContent = "Да");
 })
 deletePopup.setEventListeners();
 
-const imagePopup = new PopupWithImage(popupFotoSelector);// попап всех картинок
+const imagePopup = new PopupWithImage(fotoPopupSelector);// попап всех картинок
 imagePopup.setEventListeners();
 
 const userInfoInstallation = new UserInfo(nameSelector, descriptionSelector, avatarSelector);
@@ -72,9 +43,11 @@ function renderCard(link, place, likes, cardID, owner) {
         likeStatus: () => {
             if (!card.isLikedNow()) {// если не было лайка
                 return api.like(cardID)
+                    .catch((err) => { console.log(err) })
             }
             else {
                 return api.unlike(cardID)
+                    .catch((err) => { console.log(err) })
             }
         }
     }, link, place, likes, cardID, owner, userID, cardTemplateSelector);
@@ -97,10 +70,8 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])// получаем на�
     })
     .catch((err) => { console.log(err) });
 
-
-
-const avatarPopup = new PopupWithForm(popupAvatarSelector, (input) => {
-    popupSubmitButtonAvatar.textContent = "Cохранение...";
+const avatarPopup = new PopupWithForm(avatarPopupSelector, (input) => {
+    avatarPopupSubmitButton.textContent = "Cохранение...";
     api.patchAvatarInfo(input.avatarLink).then((res) => {
         userInfoInstallation.setUserAvatar(input.avatarLink);
         avatarPopup.close();
@@ -108,13 +79,13 @@ const avatarPopup = new PopupWithForm(popupAvatarSelector, (input) => {
     })
         .catch((err) => { console.log(err) })
         .finally(() => {
-            popupSubmitButtonAvatar.textContent = "Cохранить";
+            avatarPopupSubmitButton.textContent = "Cохранить";
         });
 });
 avatarPopup.setEventListeners();
 
 const addingPopup = new PopupWithForm(popupAddSelector, (inputs) => {
-    popupSubmitButtonAdd.textContent = 'Cоздание...';
+    addPopupSubmitButton.textContent = 'Cоздание...';
     api.postCard(inputs.url, inputs.place)
         .then((res) => {
             cardSection.addItem(renderCard(res.link, res.name, res.likes, res._id, res.owner._id));
@@ -122,19 +93,19 @@ const addingPopup = new PopupWithForm(popupAddSelector, (inputs) => {
         })
         .catch((err) => { console.log(err) })
         .finally(() => {
-            popupSubmitButtonAdd.textContent = "Cоздать"
+            addPopupSubmitButton.textContent = "Cоздать"
         })
 });
 addingPopup.setEventListeners();// работа с попапом добавлеия картинки
 
-function setPopupInfo() {
+function fillProfileInputs() {
     const userInfo = userInfoInstallation.getUserInfo();
     popupInputName.value = userInfo.name;
     popupInputDescription.value = userInfo.description;
 }//чтобы попап знал что есть в информации
 
-const userPopup = new PopupWithForm(popupInfoSelector, (input) => {
-    popupSubmitButtonProfile.textContent = "Сохранение...";
+const userPopup = new PopupWithForm(userPopupSelector, (input) => {
+    profilePopupSubmitButton.textContent = "Сохранение...";
     api.patchUserInfo(input.name, input.description)
         .then((res) => {
             userInfoInstallation.setUserInfo(input.name, input.description);
@@ -143,25 +114,24 @@ const userPopup = new PopupWithForm(popupInfoSelector, (input) => {
         })
         .catch((err) => { console.log(err) })
         .finally(() => {
-            popupSubmitButtonProfile.textContent = "Сохранить";
+            profilePopupSubmitButton.textContent = "Сохранить";
         })
 });
 userPopup.setEventListeners();// функционал попапа юзера
 
-popupOpenButtonInfoElement.addEventListener('click', () => {
-    setPopupInfo();
-    infoFormValidor.toggleButtonState();
+userPopupOpenButton.addEventListener('click', () => {
+    fillProfileInputs();
     userPopup.open();
 });
-popupOpenButtonAddElement.addEventListener('click', addingPopup.open.bind(addingPopup));// открытие попапов
-popupOpenButtonAvatar.addEventListener('click', avatarPopup.open.bind(avatarPopup));
+addPopupOpenButton.addEventListener('click', addingPopup.open.bind(addingPopup));// открытие попапов
+avatarPopupOpenButton.addEventListener('click', avatarPopup.open.bind(avatarPopup));
 
-const avatarFormValidor = new FormValidator(validationConfig, popupAvatarForm);
+const avatarFormValidor = new FormValidator(validationConfig, avatarForm);
 avatarFormValidor.enableValidation();
 
-const infoFormValidor = new FormValidator(validationConfig, popupInfoForm);
+const infoFormValidor = new FormValidator(validationConfig, userForm);
 infoFormValidor.enableValidation();
 
-const addFormValidor = new FormValidator(validationConfig, popupAddForm);
+const addFormValidor = new FormValidator(validationConfig, addForm);
 addFormValidor.enableValidation();
 // валидация

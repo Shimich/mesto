@@ -45,28 +45,25 @@ export default class FormValidator {
     };
 
     _setEventListeners() {
-        const validator = new FormValidator(this._selectors, this._form);
+        
         this._inputList.forEach((inputElement) => {
-            inputElement.addEventListener('input', function () {
-                validator.toggleButtonState();
-                validator._checkInputValidity(inputElement);
+            inputElement.addEventListener('input', ()=> {
+                this.toggleButtonState();
+                this._checkInputValidity(inputElement);
             });
         });
-        this._form.addEventListener('submit', function (evt) {
+        this._form.addEventListener('submit', (evt)=> {
             evt.preventDefault();
-            setTimeout(() => { validator.toggleButtonState() }, 0);// переключаем кнопу после ее нажатия но пойзже ресета
         });
-        const inputList = this._inputList;
-        this._form.addEventListener('reset', function (evt) {
+        this._form.addEventListener('reset', ()=> {
             setTimeout(() => {
-                //validator.toggleButtonState();
-                inputList.forEach((inputElement) => {
-                    validator._hideInputError(inputElement);
+                this.toggleButtonState();
+                this._inputList.forEach((inputElement) => {
+                    this._hideInputError(inputElement);
                 });
-            });
-        }, 0);// закрывая попам мы сбрасываем формы и врядли пользователю нужно опять напоминать ошибку
+            }, 0);
+        });// закрывая попам мы сбрасываем формы и врядли пользователю нужно опять напоминать ошибку
     };
-
 
     enableValidation() {
         this.toggleButtonState();
