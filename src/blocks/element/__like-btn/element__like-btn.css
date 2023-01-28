@@ -1,4 +1,4 @@
-.element__like {
+.element__like-btn {
     background-position: center center;
     height: 22px;
     width: 22px;
@@ -7,13 +7,14 @@
     background-color: transparent;
     border: none;
     background-image: url(../../../images/like_off.svg);
+    padding-bottom: 3px;
 }
 
-.element__like:hover {
+.element__like-btn:hover {
     opacity: 0.5;
     cursor: pointer;
 }
 
-.element__like.element__like_active{
+.element__like-btn.element__like_active{
     opacity: 1;
 }
